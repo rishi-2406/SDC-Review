@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Review = require('./model/Review');
@@ -7,13 +8,11 @@ const app = express();
 
 const PORT = 4000;
 
+app.use(cors());
 
-//starting the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-//connecting to the database 
 
 const MONGODB_URL = process.env.MONGODB_URL;
 
@@ -27,8 +26,19 @@ mongoose.connect(MONGODB_URL)
 
 app.use(express.json());
 
-
 app.post('/', postReview);
+
+app.get('/overall-average', async (req, res) => {
+    try {
+        let result = await Review.aggregate([
+            { $group: { _id: null, average: { $avg: "$average" } } },
+        ]);
+        const overallAverage = result.length > 0 ? result[0].average : 0;
+        res.json({ overallAverage });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch overall average.' });
+    }
+});
 
 
 

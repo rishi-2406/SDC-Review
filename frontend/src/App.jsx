@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
@@ -13,8 +13,27 @@ function raand(opacity = 0.15) {
   return `rgba(${r},${g},${b},${opacity})`;
 }
 
-function Que({ q }) {
-  const [rating, setRating] = useState(0);
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+function setCookie(name, value, days) {
+  const d = new Date();
+  d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = "expires=" + d.toUTCString();
+  document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function Que({ q, rating, setRating }) {
   const [hover, setHover] = useState(0);
 
   return (
@@ -48,6 +67,16 @@ function Que({ q }) {
         </div>
       )}
     </SpotlightCard>
+  );
+}
+
+function OverallAverage({ value }) {
+  return (
+    <div className="flex flex-col items-center justify-center mt-8 mb-8 p-6 rounded-xl bg-gradient-to-br from-yellow-400 via-pink-400 to-blue-400 shadow-2xl">
+      <div className="text-3xl font-extrabold text-white mb-2">Overall Average Rating</div>
+      <div className="text-6xl font-bold text-yellow-300 drop-shadow-lg">{value}</div>
+      <div className="text-lg text-white mt-2">Thank you for your feedback! This is the current average rating from all users.</div>
+    </div>
   );
 }
 
@@ -108,7 +137,79 @@ function App() {
     "Would you like follow-up workshops/resources for specific domains?",
   ];
 
-  const items2 = items.map((q, i) => <Que key={i} q={q} />);
+  let userId = getCookie('user_rating_id');
+  if (!userId) {
+    userId = generateUUID();
+    setCookie('user_rating_id', userId, 365 * 2);
+  }
+
+  const [hasRated, setHasRated] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+  const [overallAverage, setOverallAverage] = useState(null);
+
+  useEffect(() => {
+    const checkAlreadyRated = async () => {
+      try {
+        const res = await fetch(`http://localhost:4000/check-rated?user_rating_id=${userId}`);
+        const data = await res.json();
+        if (data.hasRated) {
+          setHasRated(true);
+          setSubmitMessage("You have already rated.");
+        }
+      } catch (err) {}
+    };
+    checkAlreadyRated();
+  }, [userId]);
+
+  const [ratings, setRatings] = useState(Array(items.length).fill(0));
+
+  const handleRatingChange = (index, value) => {
+    setRatings(prev => {
+      const updated = [...prev];
+      updated[index] = value;
+      return updated;
+    });
+  };
+
+  const items2 = items.map((q, i) => <Que key={i} q={q} rating={ratings[i]} setRating={value => handleRatingChange(i, value)} />);
+
+  const handleSubmit = async () => {
+    const payload = {
+      name: "Anonymous",
+      ratings: ratings,
+      average: ratings.reduce((a, b) => a + b, 0) / ratings.length,
+      user_rating_id: userId
+    };
+    try {
+      const res = await fetch("http://localhost:4000/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.status === 403) {
+        setHasRated(true);
+        setSubmitMessage(data.message || "You have already rated.");
+        if (data.SDCREVIEWVARIABLE !== undefined) {
+          setOverallAverage(data.SDCREVIEWVARIABLE);
+        } else {
+          const avgRes = await fetch("http://localhost:4000/overall-average");
+          const avgData = await avgRes.json();
+          setOverallAverage(avgData.overallAverage);
+        }
+      } else if (res.ok) {
+        setHasRated(true);
+        setSubmitMessage(data.message || "Thank you for your feedback!");
+        if (data.SDCREVIEWVARIABLE !== undefined) {
+          setOverallAverage(data.SDCREVIEWVARIABLE);
+        }
+      } else {
+        setSubmitMessage("Error submitting review");
+      }
+    } catch (err) {
+      setSubmitMessage("Error submitting review");
+    }
+  };
 
   return (
     <>
@@ -116,14 +217,17 @@ function App() {
       <h1 className="text-center bg-black text-white font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl px-4 pt-8 sm:pt-12 md:pt-16">
         Feedback Form
       </h1>
-
       <div className="min-h-screen bg-black pt-8 sm:pt-12 md:pt-20">
         <div className="flex flex-col items-center px-4 sm:px-6 md:px-10 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto space-y-4">
+          {overallAverage !== null && <OverallAverage value={overallAverage} />}
           <AnimatedList showGradients={false} displayScrollbar={false} items={items2} />
-        <Button variant="ghost" className="text-white mb-10 bg-gray-600">Submit</Button>
+          <Button variant="ghost" className="text-white mb-10 bg-gray-600" onClick={handleSubmit} disabled={hasRated}>Submit</Button>
+          {submitMessage && (
+            <div className="text-center text-lg text-yellow-400 font-semibold mt-4">{submitMessage}</div>
+          )}
         </div>
       </div>
-      </>
+    </>
   );
 }
 
