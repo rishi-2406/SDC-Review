@@ -40,5 +40,18 @@ app.get('/overall-average', async (req, res) => {
     }
 });
 
+app.get('/check-rated', async (req, res) => {
+    const user_rating_id = req.query.user_rating_id;
+    if (!user_rating_id) {
+        return res.status(400).json({ hasRated: false });
+    }
+    try {
+        const review = await Review.findOne({ user_rating_id });
+        res.json({ hasRated: !!review });
+    } catch (err) {
+        res.status(500).json({ hasRated: false });
+    }
+});
+
 
 

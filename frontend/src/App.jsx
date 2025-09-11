@@ -8,12 +8,8 @@ import TextType from './components/TextType';
 import Squares from './components/Squares';
 import { Button } from "./components/ui/button";
 import "./App.css";
-<<<<<<< HEAD
 import Silk from './components/Silk';
 import GradientText from './components/GradientText';
-import { Button } from "./components/ui/button"
-=======
->>>>>>> 99d8e9d (feat: Many features)
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -107,7 +103,6 @@ function OverallAverage({ value }) {
   );
 }
 
-<<<<<<< HEAD
 function Hero() {
   return (
     <div className="relative w-full h-screen bg-black flex items-center justify-center">
@@ -137,8 +132,6 @@ function Hero() {
   );
 }
 
-=======
->>>>>>> 99d8e9d (feat: Many features)
 function Loader() {
   return (
     <div className="bg-black fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
