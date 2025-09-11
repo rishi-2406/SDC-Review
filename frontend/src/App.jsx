@@ -8,6 +8,7 @@ import Hyperspeed from './components/Hyperspeed';
 import TextType from './components/TextType';
 import { Button } from "./components/ui/button";
 import "./App.css";
+import Silk from './components/Silk';
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -75,10 +76,27 @@ function Que({ q, rating, setRating }) {
 
 function OverallAverage({ value }) {
   return (
-    <div className="flex flex-col items-center justify-center mt-8 mb-8 p-6 rounded-xl bg-gradient-to-br from-yellow-400 via-pink-400 to-blue-400 shadow-2xl">
-      <div className="text-3xl font-extrabold text-white mb-2">Overall Average Rating</div>
-      <div className="text-6xl font-bold text-yellow-300 drop-shadow-lg">{value}</div>
-      <div className="text-lg text-white mt-2">Thank you for your feedback! This is the current average rating from all users.</div>
+    <div className="relative w-full h-screen bg-black flex items-center justify-center">
+      <div
+        className="absolute text-white font-extrabold text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl text-center px-4 flex flex-col justify-center"
+        style={{
+          zIndex: 10,
+          textShadow: '2px 2px 15px rgba(255,255,255,0.4)',
+          letterSpacing: '0.05em',
+        }}
+      >
+        <img src="/SDC.png" alt="SDC logo" className='h-60 w-60 self-center mb-5' />
+        Software Development Club
+        <h2 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'> ( Feedback Form )</h2>
+      </div>
+
+      <Silk
+        speed={5}
+        scale={1}
+        color="#7B7481"
+        noiseIntensity={1.5}
+        rotation={0}
+      />
     </div>
   );
 }
