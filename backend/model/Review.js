@@ -2,20 +2,29 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-// Create Review schema
 const reviewSchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true
     },
-    rating: {
+    user_rating_id: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    ratings: {
+        type: [Number],
+        required: true,
+        validate: arr => arr.length === 10
+    },
+    average: {
         type: Number,
         required: true,
         min: 1,
-        max: 5 
-    },
-
+        max: 5
+    }
 });
 
 module.exports = mongoose.model('Review', reviewSchema);
