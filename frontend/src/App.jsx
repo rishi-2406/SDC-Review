@@ -4,6 +4,7 @@ import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
 import Silk from './components/Silk';
 import GradientText from './components/GradientText';
+import { Button } from "./components/ui/button"
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -58,7 +59,7 @@ function Hero() {
         style={{
           zIndex: 10,
           letterSpacing: '0.05em',
-          fontFamily : '"Roboto"'
+          fontFamily : ''
         }}
       >
         <img src="/SDC.png" alt="SDC logo" className='h-60 w-60 self-center mb-5' />
@@ -119,8 +120,10 @@ function App() {
       <div className="min-h-screen bg-black pt-8 sm:pt-12 md:pt-20">
         <div className="flex flex-col items-center px-4 sm:px-6 md:px-10 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto space-y-4">
           <AnimatedList showGradients={false} displayScrollbar={false} items={items2} />
+        <Button variant="ghost" className="text-white mb-10 bg-gray-600">Submit</Button>
         </div>
-      </div></>
+      </div>
+      </>
   );
 }
 
