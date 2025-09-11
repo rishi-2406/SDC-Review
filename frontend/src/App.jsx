@@ -138,6 +138,23 @@ function App() {
   ];
 
   let userId = getCookie('user_rating_id');
+  let userName = getCookie('user_name');
+  const [nameLoaded, setNameLoaded] = useState(!!userName);
+
+  useEffect(() => {
+    async function fetchNameAndSetCookie() {
+      if (!userName) {
+        const res = await fetch('https://randomuser.me/api/');
+        const data = await res.json();
+        const name = data.results[0].name.first + ' ' + data.results[0].name.last;
+        setCookie('user_name', name, 365 * 2);
+        userName = name;
+        setNameLoaded(true);
+      }
+    }
+    fetchNameAndSetCookie();
+  }, []);
+
   if (!userId) {
     userId = generateUUID();
     setCookie('user_rating_id', userId, 365 * 2);
@@ -174,8 +191,9 @@ function App() {
   const items2 = items.map((q, i) => <Que key={i} q={q} rating={ratings[i]} setRating={value => handleRatingChange(i, value)} />);
 
   const handleSubmit = async () => {
+    if (!nameLoaded) return;
     const payload = {
-      name: "Anonymous",
+      name: userName,
       ratings: ratings,
       average: ratings.reduce((a, b) => a + b, 0) / ratings.length,
       user_rating_id: userId
@@ -221,7 +239,7 @@ function App() {
         <div className="flex flex-col items-center px-4 sm:px-6 md:px-10 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto space-y-4">
           {overallAverage !== null && <OverallAverage value={overallAverage} />}
           <AnimatedList showGradients={false} displayScrollbar={false} items={items2} />
-          <Button variant="ghost" className="text-white mb-10 bg-gray-600" onClick={handleSubmit} disabled={hasRated}>Submit</Button>
+          <Button variant="ghost" className="text-white mb-10 bg-gray-600" onClick={handleSubmit} disabled={hasRated || !nameLoaded}>Submit</Button>
           {submitMessage && (
             <div className="text-center text-lg text-yellow-400 font-semibold mt-4">{submitMessage}</div>
           )}
