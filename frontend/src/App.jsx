@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
-import Prism from './components/Prism';
+import Silk from './components/Silk';
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -94,16 +94,12 @@ function Hero() {
         <h2 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'> ( Feedback Form )</h2>
       </div>
 
-      <Prism
-        animationType="rotate"
-        timeScale={0.5}
-        height={3.5}
-        baseWidth={5.5}
-        scale={3.6}
-        hueShift={0}
-        colorFrequency={4}
-        noise={0.4}
-        glow={1}
+      <Silk
+        speed={5}
+        scale={1}
+        color="#7B7481"
+        noiseIntensity={1.5}
+        rotation={0}
       />
     </div>
   );
