@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
@@ -163,6 +163,7 @@ function App() {
   const [hasRated, setHasRated] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
   const [overallAverage, setOverallAverage] = useState(null);
+  const overallAverageRef = useRef(null);
 
   useEffect(() => {
     const checkAlreadyRated = async () => {
@@ -210,16 +211,31 @@ function App() {
         setSubmitMessage(data.message || "You have already rated.");
         if (data.SDCREVIEWVARIABLE !== undefined) {
           setOverallAverage(data.SDCREVIEWVARIABLE);
+          setTimeout(() => {
+            if (overallAverageRef.current) {
+              overallAverageRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 1000);
         } else {
           const avgRes = await fetch("http://localhost:4000/overall-average");
           const avgData = await avgRes.json();
           setOverallAverage(avgData.overallAverage);
+          setTimeout(() => {
+            if (overallAverageRef.current) {
+              overallAverageRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 1000);
         }
       } else if (res.ok) {
         setHasRated(true);
         setSubmitMessage(data.message || "Thank you for your feedback!");
         if (data.SDCREVIEWVARIABLE !== undefined) {
           setOverallAverage(data.SDCREVIEWVARIABLE);
+          setTimeout(() => {
+            if (overallAverageRef.current) {
+              overallAverageRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 1000);
         }
       } else {
         setSubmitMessage("Error submitting review");
@@ -237,7 +253,7 @@ function App() {
       </h1>
       <div className="min-h-screen bg-black pt-8 sm:pt-12 md:pt-20">
         <div className="flex flex-col items-center px-4 sm:px-6 md:px-10 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto space-y-4">
-          {overallAverage !== null && <OverallAverage value={overallAverage} />}
+          {overallAverage !== null && <div ref={overallAverageRef}><OverallAverage value={overallAverage} /></div>}
           <AnimatedList showGradients={false} displayScrollbar={false} items={items2} />
           <Button variant="ghost" className="text-white mb-10 bg-gray-600" onClick={handleSubmit} disabled={hasRated || !nameLoaded}>Submit</Button>
           {submitMessage && (
