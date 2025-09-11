@@ -15,6 +15,12 @@ const reviewSchema = new Schema({
         min: 1,
         max: 5 
     },
+    user_rating_id: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    }
 
 });
 
