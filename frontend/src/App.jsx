@@ -8,9 +8,12 @@ import Hyperspeed from './components/Hyperspeed';
 import TextType from './components/TextType';
 import { Button } from "./components/ui/button";
 import "./App.css";
+<<<<<<< HEAD
 import Silk from './components/Silk';
 import GradientText from './components/GradientText';
 import { Button } from "./components/ui/button"
+=======
+>>>>>>> 99d8e9d (feat: Many features)
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -44,7 +47,7 @@ function Que({ q, rating, setRating }) {
 
   return (
     <SpotlightCard spotlightColor={raand()}>
-      <div className="w-full break-words text-base sm:text-lg md:text-xl font-semibold text-white mb-3 sm:mb-4 md:mb-5 text-center sm:text-left">
+      <div className="w-full break-words text-sm sm:text-base md:text-lg text-white mb-2 sm:mb-3 md:mb-4 text-center sm:text-left font-class">
         {q}
       </div>
 
@@ -66,10 +69,9 @@ function Que({ q, rating, setRating }) {
         })}
       </div>
 
-
       {rating > 0 && (
-        <div className="mt-2 text-sm sm:text-base text-gray-300 text-center sm:text-left">
-          You rated this <span className="text-yellow-400 font-medium">{rating} / 5</span>
+        <div className="mt-2 text-sm sm:text-base text-gray-300 text-center sm:text-left font-class">
+          You rated this <span className="text-yellow-400">{rating} / 5</span>
         </div>
       )}
     </SpotlightCard>
@@ -80,43 +82,32 @@ function OverallAverage({ value }) {
   return (
     <div className="relative w-full h-screen bg-black flex items-center justify-center">
       <div
-        className="absolute font-extrabold text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl text-center px-4 flex flex-col justify-center"
-        style={{
-          zIndex: 10,
-          letterSpacing: '0.05em',
-          fontFamily : ''
-        }}
+        className="absolute text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl text-center px-4 flex flex-col justify-center font-class"
+        style={{ zIndex: 10, letterSpacing: '0.03em' }}
       >
-        <img src="/SDC.png" alt="SDC logo" className='h-60 w-60 self-center mb-5' />
-        <GradientText
-          colors = {["#ff9f40", "#ffc140", "#ffffff", "#f0f0f0", "#ff40aa"]}
-          animationSpeed={1}
-          showBorder={false}
-          className=""
-        >
-          Software Development Club
-        </GradientText>
-        <h2 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'> <GradientText
-          colors={["#ff9f40", "#ffc140", "#ffffff", "#f0f0f0", "#ff40aa"]}
-          animationSpeed={3}
-          showBorder={false}
-          className=""
-        >
-          ( Feedback Form )
-        </GradientText></h2>
+        <img src="/SDC.png" alt="SDC logo" className="h-60 w-60 self-center mb-5 rounded-[50%]" />
+        <TextType
+          text={["Software Development Club", "Web Development", "Coding", "AI / ML", "Cyber Security", "Design & PR"]}
+          typingSpeed={75}
+          pauseDuration={1500}
+          showCursor={true}
+          cursorCharacter="|"
+        />
       </div>
 
-      <Silk
-        speed={5}
-        scale={1}
-        color="#2a62ff"
-        noiseIntensity={1.5}
-        rotation={0}
-      />
+      <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+        <Orb
+          hoverIntensity={0}
+          rotateOnHover={true}
+          hue={78}
+          forceHoverState={false}
+        />
+      </div>
     </div>
   );
 }
 
+<<<<<<< HEAD
 function Hero() {
   return (
     <div className="relative w-full h-screen bg-black flex items-center justify-center">
@@ -146,6 +137,8 @@ function Hero() {
   );
 }
 
+=======
+>>>>>>> 99d8e9d (feat: Many features)
 function Loader() {
   return (
     <div className="bg-black fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
