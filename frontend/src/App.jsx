@@ -41,7 +41,7 @@ function Que({ q, rating, setRating }) {
 
   return (
     <SpotlightCard spotlightColor={raand()}>
-      <div className="w-full break-words text-sm sm:text-base md:text-lg text-white mb-2 sm:mb-3 md:mb-4 text-center sm:text-left font-class">
+      <div className="w-full break-words text-base sm:text-lg md:text-xl font-semibold text-white mb-3 sm:mb-4 md:mb-5 text-center sm:text-left">
         {q}
       </div>
 
@@ -51,7 +51,7 @@ function Que({ q, rating, setRating }) {
           return (
             <Star
               key={star}
-              size={24}
+              size={24} // fixed small size for mobile
               className={`cursor-pointer transition-transform duration-200 
           ${filled ? "text-yellow-400 fill-yellow-400 drop-shadow-lg" : "text-gray-300"} 
           hover:scale-125`}
@@ -63,9 +63,10 @@ function Que({ q, rating, setRating }) {
         })}
       </div>
 
+
       {rating > 0 && (
-        <div className="mt-2 text-sm sm:text-base text-gray-300 text-center sm:text-left font-class">
-          You rated this <span className="text-yellow-400">{rating} / 5</span>
+        <div className="mt-2 text-sm sm:text-base text-gray-300 text-center sm:text-left">
+          You rated this <span className="text-yellow-400 font-medium">{rating} / 5</span>
         </div>
       )}
     </SpotlightCard>
