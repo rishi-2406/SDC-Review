@@ -3,9 +3,9 @@ import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
 import Orb from './components/Orb';
-import TrueFocus from './components/TrueFocus';
 import Hyperspeed from './components/Hyperspeed';
 import TextType from './components/TextType';
+import Squares from './components/Squares';
 import { Button } from "./components/ui/button";
 import "./App.css";
 
