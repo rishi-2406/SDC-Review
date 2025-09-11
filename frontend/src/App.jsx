@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect, useRef } from 'react';
 import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
