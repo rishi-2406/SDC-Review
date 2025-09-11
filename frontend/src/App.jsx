@@ -4,6 +4,7 @@ import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
 import Silk from './components/Silk';
 import GradientText from './components/GradientText';
+import { Button } from "./components/ui/button"
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -87,7 +88,7 @@ function Hero() {
         style={{
           zIndex: 10,
           letterSpacing: '0.05em',
-          fontFamily : '"Roboto"'
+          fontFamily : ''
         }}
       >
         <img src="/SDC.png" alt="SDC logo" className='h-60 w-60 self-center mb-5' />
