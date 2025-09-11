@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
-import Silk from './components/Silk';
-import GradientText from './components/GradientText';
-import { Button } from "./components/ui/button"
+import Prism from './components/Prism';
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -84,38 +82,28 @@ function Hero() {
   return (
     <div className="relative w-full h-screen bg-black flex items-center justify-center">
       <div
-        className="absolute font-extrabold text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl text-center px-4 flex flex-col justify-center"
+        className="absolute text-white font-extrabold text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl text-center px-4 flex flex-col justify-center"
         style={{
           zIndex: 10,
+          textShadow: '2px 2px 15px rgba(255,255,255,0.4)',
           letterSpacing: '0.05em',
-          fontFamily : ''
         }}
       >
         <img src="/SDC.png" alt="SDC logo" className='h-60 w-60 self-center mb-5' />
-        <GradientText
-          colors = {["#ff9f40", "#ffc140", "#ffffff", "#f0f0f0", "#ff40aa"]}
-          animationSpeed={1}
-          showBorder={false}
-          className=""
-        >
-          Software Development Club
-        </GradientText>
-        <h2 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'> <GradientText
-          colors={["#ff9f40", "#ffc140", "#ffffff", "#f0f0f0", "#ff40aa"]}
-          animationSpeed={3}
-          showBorder={false}
-          className=""
-        >
-          ( Feedback Form )
-        </GradientText></h2>
+        Software Development Club
+        <h2 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'> ( Feedback Form )</h2>
       </div>
 
-      <Silk
-        speed={5}
-        scale={1}
-        color="#2a62ff"
-        noiseIntensity={1.5}
-        rotation={0}
+      <Prism
+        animationType="rotate"
+        timeScale={0.5}
+        height={3.5}
+        baseWidth={5.5}
+        scale={3.6}
+        hueShift={0}
+        colorFrequency={4}
+        noise={0.4}
+        glow={1}
       />
     </div>
   );
