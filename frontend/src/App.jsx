@@ -3,6 +3,7 @@ import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
 import Silk from './components/Silk';
+import GradientText from './components/GradientText';
 
 function raand(opacity = 0.15) {
   const r = Math.floor(Math.random() * 256);
@@ -82,16 +83,30 @@ function Hero() {
   return (
     <div className="relative w-full h-screen bg-black flex items-center justify-center">
       <div
-        className="absolute text-white font-extrabold text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl text-center px-4 flex flex-col justify-center"
+        className="absolute font-extrabold text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl text-center px-4 flex flex-col justify-center"
         style={{
           zIndex: 10,
-          textShadow: '2px 2px 15px rgba(255,255,255,0.4)',
           letterSpacing: '0.05em',
+          fontFamily : '"Roboto"'
         }}
       >
         <img src="/SDC.png" alt="SDC logo" className='h-60 w-60 self-center mb-5' />
-        Software Development Club
-        <h2 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'> ( Feedback Form )</h2>
+        <GradientText
+          colors = {["#ff9f40", "#ffc140", "#ffffff", "#f0f0f0", "#ff40aa"]}
+          animationSpeed={1}
+          showBorder={false}
+          className=""
+        >
+          Software Development Club
+        </GradientText>
+        <h2 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'> <GradientText
+          colors={["#ff9f40", "#ffc140", "#ffffff", "#f0f0f0", "#ff40aa"]}
+          animationSpeed={3}
+          showBorder={false}
+          className=""
+        >
+          ( Feedback Form )
+        </GradientText></h2>
       </div>
 
       <Silk
