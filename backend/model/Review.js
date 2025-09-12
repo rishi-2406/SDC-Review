@@ -17,7 +17,7 @@ const reviewSchema = new Schema({
     ratings: {
         type: [Number],
         required: true,
-        validate: arr => arr.length === 10
+        validate: arr => arr.length === 2
     },
     average: {
         type: Number,

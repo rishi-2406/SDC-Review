@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { Star } from "lucide-react";
 import AnimatedList from './components/AnimatedList';
 import SpotlightCard from './components/SpotlightCard';
-import Orb from './components/Orb';
+import LightRays from './components/LightRays';
 import Hyperspeed from './components/Hyperspeed';
 import TextType from './components/TextType';
+import ScrollFloat from './components/ScrollFloat';
 import { Button } from "./components/ui/button";
 import "./App.css";
 
@@ -36,84 +37,166 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-function Que({ q, rating, setRating }) {
+function Que({ q, rating, setRating, hasRated }) {
   const [hover, setHover] = useState(0);
 
   return (
-    <SpotlightCard spotlightColor={raand()}>
-      <div className="w-full break-words text-sm sm:text-base md:text-lg text-white mb-2 sm:mb-3 md:mb-4 text-center sm:text-left font-class">
-        {q}
-      </div>
-      <div className="flex flex-wrap justify-center sm:justify-start gap-2">
-        {[1, 2, 3, 4, 5].map((star) => {
-          const filled = star <= (hover || rating);
-          return (
-            <Star
-              key={star}
-              size={24}
-              className={`cursor-pointer transition-transform duration-200 
-                ${filled ? "text-yellow-400 fill-yellow-400 drop-shadow-lg" : "text-gray-300"} 
-                hover:scale-125`}
-              onMouseEnter={() => setHover(star)}
-              onMouseLeave={() => setHover(0)}
-              onClick={() => setRating(star)}
-            />
-          );
-        })}
-      </div>
-      {rating > 0 && (
-        <div className="mt-2 text-sm sm:text-base text-gray-300 text-center sm:text-left font-class">
-          You rated this <span className="text-yellow-400">{rating} / 5</span>
+    <div className="relative">
+      <SpotlightCard spotlightColor={raand()}>
+        <div className="p-8 bg-gradient-to-br from-gray-900/80 to-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700/50">
+          <div className="w-full text-lg sm:text-xl md:text-2xl text-white mb-6 text-center font-class">
+            {q}
+          </div>
+
+          <div className="flex justify-center gap-3 mb-4">
+            {hasRated
+              ? [...Array(rating)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={32}
+                  className="text-yellow-400 fill-yellow-400"
+                />
+              ))
+              : [1, 2, 3, 4, 5].map((star) => {
+                const filled = star <= (hover || rating);
+                return (
+                  <Star
+                    key={star}
+                    size={32}
+                    className={
+                      filled
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-gray-400"
+                    }
+                    onMouseEnter={() => !hasRated && setHover(star)}
+                    onMouseLeave={() => !hasRated && setHover(0)}
+                    onClick={() => !hasRated && setRating(star)}
+                  />
+                );
+              })}
+          </div>
+
+          {rating > 0 && (
+            <div className="text-center">
+              <div className="inline-flex gap-2 px-4 py-2 bg-yellow-500/20 rounded-full border border-yellow-400/30">
+                <span className="text-gray-200">You rated this</span>
+                <span className="text-yellow-400 font-bold">{rating} / 5</span>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </SpotlightCard>
+      </SpotlightCard>
+    </div>
   );
 }
 
 function OverallAverage({ value }) {
   return (
-    <div className="relative w-full h-screen bg-black flex items-center justify-center">
-      <div className="absolute text-white text-3xl z-10">
-        Overall Average: {value.toFixed(2)} ⭐
+    <div className="relative w-full min-h-screen flex items-center justify-center py-20">
+      <div className="text-center space-y-8">
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-xl opacity-20 animate-pulse"></div>
+          <div className="relative bg-gradient-to-r from-gray-900 to-gray-800 p-12 rounded-3xl border border-gray-600/50 backdrop-blur-sm shadow-2xl">
+            <div className="text-6xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent mb-4">
+              {value.toFixed(2)}
+            </div>
+            <div className="flex justify-center mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={40}
+                  className={`${i < Math.round(value)
+                    ? "text-yellow-400 fill-yellow-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]"
+                    : "text-gray-500"
+                    }`}
+                />
+              ))}
+            </div>
+            <div className="text-3xl text-white font-class">Overall Average Rating</div>
+            <div className="text-gray-400 text-lg mt-2 font-class">Based on all feedback received</div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto px-4">
+          <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 p-6 rounded-2xl border border-blue-500/30 backdrop-blur-sm">
+            <div className="text-2xl font-bold text-blue-400 mb-2">Excellent</div>
+            <div className="text-gray-300">Thank you for the amazing feedback!</div>
+          </div>
+          <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 p-6 rounded-2xl border border-green-500/30 backdrop-blur-sm">
+            <div className="text-2xl font-bold text-green-400 mb-2">Appreciated</div>
+            <div className="text-gray-300">Your input helps us improve</div>
+          </div>
+          <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 p-6 rounded-2xl border border-purple-500/30 backdrop-blur-sm">
+            <div className="text-2xl font-bold text-purple-400 mb-2">Community</div>
+            <div className="text-gray-300">Building together, growing together</div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
 
 function Hero() {
   return (
-    <div className="relative w-full h-screen bg-black flex items-center justify-center">
+    <div className="relative w-full h-screen bg-gradient-to-br from-black via-slate-900 to-black flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/5 via-transparent to-blue-900/10"></div>
+
       <div
         className="absolute text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl text-center px-4 flex flex-col justify-center font-class"
-        style={{ zIndex: 10, letterSpacing: '0.03em' }}
+        style={{ zIndex: 10, letterSpacing: "0.03em" }}
       >
-        <img src="/SDC.png" alt="SDC logo" className="h-60 w-60 self-center mb-5 rounded-[50%]" />
-        <TextType
-          text={[
-            "Software Development Club",
-            "Web Development",
-            "Coding",
-            "AI / ML",
-            "Cyber Security",
-            "Design & PR",
-          ]}
-          typingSpeed={75}
-          pauseDuration={1500}
-          showCursor={true}
-          cursorCharacter="|"
+        <img
+          src="/SDC.png"
+          alt="SDC logo"
+          className="mt-28 h-60 w-60 self-center rounded-full border-4 border-slate-700/50 transition-all duration-300"
         />
+
+        <div className="bg-black/40 mt-10 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 shadow-lg">
+          <TextType
+            text={[
+              "Software Development Club",
+              "Web Development",
+              "Coding",
+              "AI / ML",
+              "Cyber Security",
+              "Design & PR",
+            ]}
+            typingSpeed={75}
+            pauseDuration={1500}
+            showCursor={true}
+            cursorCharacter="|"
+          />
+          <p className="text-gray-400 text-lg sm:text-xl mt-4">
+            Innovate. Collaborate. Elevate.
+          </p>
+        </div>
       </div>
-      <div style={{ width: '100%', height: '600px', position: 'relative' }}>
-        <Orb hoverIntensity={0} rotateOnHover={true} hue={78} forceHoverState={false} />
+
+      {/* Accent orb */}
+      <div className="absolute w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-3xl animate-pulse -top-20 -left-20"></div>
+
+      <div style={{ width: "100%", height: "100vh", position: "relative" }}>
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#3B82F6"
+          raysSpeed={1.5}
+          lightSpread={0.8}
+          rayLength={2}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0.1}
+          distortion={0.05}
+          className="custom-rays"
+        />
       </div>
     </div>
   );
 }
 
+
 function Loader() {
   return (
-    <div className="bg-black fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
+    <div className="bg-gradient-to-br from-black via-purple-950/30 to-black fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
       <Hyperspeed
         effectOptions={{
           onSpeedUp: () => { },
@@ -153,7 +236,7 @@ function Loader() {
           },
         }}
       />
-      <div className="absolute text-white text-base sm:text-xl md:text-2xl lg:text-4xl font-class">
+      <div className="absolute text-white text-base sm:text-xl md:text-2xl lg:text-4xl font-class bg-black/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-700/50">
         <TextType
           text={["Loading..", "Rate wisely ☝️"]}
           typingSpeed={75}
@@ -206,16 +289,29 @@ function App() {
       try {
         const res = await fetch(`http://localhost:4000/check-rated?user_rating_id=${userId}`);
         const data = await res.json();
+        console.log("check-rated response:", data);
+
+
         if (data.hasRated) {
           setHasRated(true);
           setSubmitMessage("You have already rated.");
+
+          if (Array.isArray(data.que)) {
+            setRatings(data.que); 
+          }
+
+          if (typeof data.ratings === "number") {
+            setOverallAverage(data.ratings);
+          }
         }
       } catch (err) {
-        console.log(err);
+        console.log("Error fetching rating:", err);
       }
     };
+
     checkAlreadyRated();
   }, [userId]);
+
 
   const handleRatingChange = (index, value) => {
     setRatings(prev => {
@@ -226,8 +322,17 @@ function App() {
   };
 
   const items2 = items.map((q, i) => (
-    <Que key={i} q={q} rating={ratings[i]} setRating={value => handleRatingChange(i, value)} />
+    <Que
+      key={i}
+      q={q}
+      rating={ratings[i]}
+      setRating={(value) => handleRatingChange(i, value)}
+      hasRated={hasRated}
+      userId={userId}
+    />
   ));
+
+
 
   const handleSubmit = async () => {
     if (!nameLoaded) return;
@@ -273,34 +378,84 @@ function App() {
     }
   };
 
+  const allRated = ratings.every(rating => rating > 0);
+
   return (
     <>
       {/* <Loader /> */}
       <Hero />
-      <h1 className="text-center bg-black text-white text-2xl sm:text-3xl md:text-4xl px-4 pt-6 sm:pt-8 md:pt-10 font-class">
-        Feedback Form
-      </h1>
-      <div className="min-h-screen bg-black pt-8 sm:pt-12 md:pt-20">
-        <div className="flex flex-col items-center px-4 sm:px-6 md:px-10 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto space-y-4">
-          {overallAverage !== null && (
-            <div ref={overallAverageRef}>
-              <OverallAverage value={overallAverage} />
+
+      <div className="bg-black">
+        <div className="text-center pt-16 pb-8">
+          <div className="relative inline-block">
+            <div className="absolute -inset-2 rounded-lg blur opacity-20"></div>
+            <h1 className="relative text-white text-xl sm:text-5xl md:text-5xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent font-class px-8 py-4">
+              <ScrollFloat
+                animationDuration={1}
+                ease='back.inOut(2)'
+                scrollStart='center bottom+=50%'
+                scrollEnd='bottom bottom-=40%'
+                stagger={0.03}
+              >
+                Feedback Form
+              </ScrollFloat>
+            </h1>
+          </div>
+          <p className="text-gray-400 text-lg mt-4 font-class">Your opinion matters to us</p>
+        </div>
+
+        <div className="min-h-screen pt-8 pb-20">
+          <div className="flex flex-col items-center px-4 sm:px-6 md:px-10 w-full max-w-4xl mx-auto space-y-8">
+            {overallAverage !== null && (
+              <div ref={overallAverageRef}>
+                <OverallAverage value={overallAverage} />
+              </div>
+            )}
+
+            <div className="w-full">
+              <AnimatedList showGradients={false} displayScrollbar={false} items={items2} />
             </div>
-          )}
-          <AnimatedList showGradients={false} displayScrollbar={false} items={items2} />
-          <Button
-            variant="ghost"
-            className="text-white mb-10 bg-gray-600"
-            onClick={handleSubmit}
-            disabled={hasRated || !nameLoaded}
-          >
-            Submit
-          </Button>
-          {submitMessage && (
-            <div className="text-center text-lg text-yellow-400 font-semibold mt-4">
-              {submitMessage}
+
+            <div className="flex flex-col items-center space-y-4">
+              <Button
+                variant="ghost"
+                className={`
+                  px-12 py-4 text-lg font-semibold transition-all duration-300 rounded-2xl border-2
+                  ${hasRated || !nameLoaded
+                    ? "bg-gray-700/50 border-gray-600/50 text-gray-400 cursor-not-allowed"
+                    : allRated
+                      ? "bg-gradient-to-r from-green-600 to-emerald-600 border-green-500/50 text-white hover:from-green-500 hover:to-emerald-500 hover:border-green-400/70 hover:shadow-lg hover:shadow-green-500/25 hover:scale-105"
+                      : "bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500/50 text-white hover:from-purple-500 hover:to-pink-500 hover:border-purple-400/70 hover:shadow-lg hover:shadow-purple-500/25 hover:scale-105"
+                  }
+                `}
+                onClick={handleSubmit}
+                disabled={hasRated || !nameLoaded}
+              >
+                {hasRated ? "Already Submitted" : allRated ? "Submit Feedback ✨" : "Submit Feedback"}
+              </Button>
+
+              {!allRated && !hasRated && (
+                <p className="text-gray-500 text-sm font-class">Please rate all questions before submitting</p>
+              )}
             </div>
-          )}
+
+            {submitMessage && (
+              <div className="text-center mt-8">
+                <div className={`
+                  inline-flex items-center px-6 py-3 rounded-2xl font-semibold text-lg
+                  ${submitMessage.includes("Error")
+                    ? "bg-gradient-to-r from-red-900/80 to-red-800/40 border border-red-500/50 text-red-200"
+                    : "bg-gradient-to-r from-green-900/80 to-emerald-800/40 border border-green-500/50 text-green-200"
+                  }
+                  backdrop-blur-sm shadow-xl
+                `}>
+                  <div className={`w-3 h-3 rounded-full mr-3 ${submitMessage.includes("Error") ? "bg-red-400" : "bg-green-400"
+                    } animate-pulse`}></div>
+                  {submitMessage}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>
