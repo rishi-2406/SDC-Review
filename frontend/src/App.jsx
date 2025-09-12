@@ -78,9 +78,9 @@ function Que({ q, rating, setRating, hasRated }) {
 
           {rating > 0 && (
             <div className="text-center">
-              <div className="inline-flex gap-2 px-4 py-2 bg-yellow-500/20 rounded-full border border-yellow-400/30 items-center">
-                <span className="text-gray-200">You rated this</span>
-                <span className="text-yellow-400 font-bold">{rating} / 5</span>
+              <div className="inline-flex flex-col gap-2 px-4 py-2 bg-yellow-500/20 rounded-full border border-yellow-400/30 items-center">
+                <span className="text-gray-200 whitespace-nowrap">You rated this</span>
+                <span className="text-yellow-400 font-bold whitespace-nowrap">{rating} / 5</span>
               </div>
             </div>
           )}
