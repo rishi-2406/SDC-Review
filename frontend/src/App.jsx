@@ -79,8 +79,12 @@ function Que({ q, rating, setRating, hasRated }) {
           {rating > 0 && (
             <div className="text-center">
               <div className="inline-flex flex-col gap-2 px-4 py-2 bg-yellow-500/20 rounded-full border border-yellow-400/30 items-center">
-                <span className="text-gray-200 whitespace-nowrap">You rated this</span>
-                <span className="text-yellow-400 font-bold whitespace-nowrap">{rating} / 5</span>
+                <span className="text-gray-200 whitespace-nowrap">
+                  You rated this
+                </span>
+                <span className="text-yellow-400 font-bold whitespace-nowrap">
+                  {rating} / 5
+                </span>
               </div>
             </div>
           )}
@@ -265,8 +269,8 @@ function Loader() {
 
 function App() {
   const items = [
-    "How clear was the explanation of the Coding domain?",
-    "Did the Web Development session give you a good understanding of its scope?",
+    "How would you rate your overall satisfaction with the session?",
+    "How excited are you to attend our upcoming sessions?",
   ];
 
   let userId = getCookie("user_rating_id");
@@ -418,6 +422,12 @@ function App() {
               </ScrollFloat>
             </h1>
           </div>
+          {/* 👇 Display user's name */}
+          {userName && (
+            <p className="text-blue-400 text-lg mt-2 font-class">
+              Welcome, <span className="font-semibold">{userName}</span> ✨
+            </p>
+          )}
           <p className="text-gray-400 text-lg mt-4 font-class">
             Your opinion matters to us
           </p>
@@ -443,15 +453,15 @@ function App() {
               <Button
                 variant="ghost"
                 className={`
-                  px-12 py-4 text-lg font-semibold transition-all duration-300 rounded-2xl border-2
-                  ${
-                    hasRated || !nameLoaded
-                      ? "bg-gray-700/50 border-gray-600/50 text-gray-400 cursor-not-allowed"
-                      : allRated
-                      ? "bg-gradient-to-r from-green-600 to-emerald-600 border-green-500/50 text-white hover:from-green-500 hover:to-emerald-500 hover:border-green-400/70 hover:shadow-lg hover:shadow-green-500/25 hover:scale-105"
-                      : "bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500/50 text-white hover:from-purple-500 hover:to-pink-500 hover:border-purple-400/70 hover:shadow-lg hover:shadow-purple-500/25 hover:scale-105"
-                  }
-                `}
+    px-16 py-5 text-xl font-semibold transition-all duration-300 rounded-2xl border-2
+    ${
+      hasRated || !nameLoaded
+        ? "bg-gray-700/50 border-gray-600/50 text-gray-400 cursor-not-allowed"
+        : allRated
+        ? "bg-gradient-to-r from-blue-600 to-sky-600 border-blue-500/50 text-white hover:from-blue-500 hover:to-sky-500 hover:border-blue-400/70 hover:shadow-lg hover:shadow-blue-500/25 hover:scale-105"
+        : "bg-gradient-to-r from-blue-600 to-sky-600 border-blue-500/50 text-white hover:from-blue-500 hover:to-sky-500 hover:border-blue-400/70 hover:shadow-lg hover:shadow-blue-500/25 hover:scale-105"
+    }
+  `}
                 onClick={handleSubmit}
                 disabled={hasRated || !nameLoaded}
               >
