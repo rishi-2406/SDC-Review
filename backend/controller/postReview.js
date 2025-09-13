@@ -24,6 +24,7 @@ exports.postReview = async (req, res) => {
       average: obj.average,
       user_rating_id: obj.user_rating_id,
     });
+    console.log(objCreated);
     let SDCREVIEWVARIABLE = await Review.aggregate([
       { $group: { _id: null, average: { $avg: "$average" } } },
     ]);

@@ -410,7 +410,7 @@ function App() {
         <div className="text-center pt-16 pb-8">
           <div className="relative inline-block">
             <div className="absolute -inset-2 rounded-lg blur opacity-20"></div>
-            <h1 className="relative text-white text-xl sm:text-5xl md:text-5xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent font-class px-8 py-4">
+            <h1 className="relative text-white text-xl sm:text-5xl md:text-5xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text font-class px-8 py-4">
               <ScrollFloat
                 animationDuration={1}
                 ease="back.inOut(2)"
