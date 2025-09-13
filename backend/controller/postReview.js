@@ -24,7 +24,6 @@ exports.postReview = async (req, res) => {
       average: obj.average,
       user_rating_id: obj.user_rating_id,
     });
-    console.log(objCreated);
     let SDCREVIEWVARIABLE = await Review.aggregate([
       { $group: { _id: null, average: { $avg: "$average" } } },
     ]);
@@ -35,6 +34,11 @@ exports.postReview = async (req, res) => {
       SDCREVIEWVARIABLE = parseFloat(SDCREVIEWVARIABLE);
       SDCREVIEWVARIABLE = parseFloat(SDCREVIEWVARIABLE.toFixed(2));
     }
+    console.log(`📌 New review created!`);
+    console.log(`👤 Reviewer Name: ${obj.name}`);
+    console.log(`⭐ Ratings given: ${obj.ratings.join(", ")}`);
+    console.log(`📊 Average Rating: ${SDCREVIEWVARIABLE.toFixed(2)}`);
+
     res.status(200).json({
       success: "true",
       message: "Review logged successfully",
